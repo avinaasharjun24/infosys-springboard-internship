@@ -1,0 +1,36 @@
+flowchart TB
+    U[Engineer / User] --> UI[React Web Application]
+    UI --> API[FastAPI Backend / API Layer]
+    API --> VAL[Input Validation & Submission Service]
+    VAL --> PARSE[Bug Report Processing<br/>Parsing • Normalization • Metadata extraction]
+    PARSE --> PG[(PostgreSQL<br/>Reports • Attachments metadata • Runs)]
+
+    subgraph Offline["Offline: Historical Knowledge Base Ingestion"]
+        SRC[Mozilla • Apache • Eclipse datasets] --> CLEAN[Dataset profiling, cleaning<br/>& standardization]
+        CLEAN --> CHUNK[Chunking and metadata enrichment]
+        CHUNK --> EMB[Sentence Transformers<br/>Embedding generation]
+        EMB --> QD[(Qdrant Vector Database)]
+        CLEAN --> PG
+    end
+
+    subgraph Online["Online: Submitted Bug Analysis"]
+        PARSE --> QUERY[Query construction & embedding]
+        QUERY --> RET[RAG retrieval pipeline]
+        QD --> RET
+        RET --> CTX[Retrieved defect evidence<br/>with source references]
+        PG --> ORCH[LangGraph Agent Orchestrator]
+        CTX --> ORCH
+        PARSE --> ORCH
+        ORCH --> TRI[Triage Agent]
+        ORCH --> LOG[Log Analysis Agent]
+        ORCH --> DUP[Duplicate Detection Agent]
+        TRI --> ROOT[Root Cause Agent]
+        LOG --> ROOT
+        DUP --> ROOT
+        ROOT --> REM[Remediation Agent]
+        REM --> OUT[Structured Findings & Recommendations]
+        OUT --> PG
+    end
+
+    OUT --> API
+    API --> UI
