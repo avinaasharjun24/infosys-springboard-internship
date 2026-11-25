@@ -1,0 +1,11 @@
+# Local secrets and runtime state
+backend/.env
+backend/.venv/
+backend/storage/
+backend/*.db
+backend/*.sqlite
+frontend/node_modules/
+frontend/dist/
+**/__pycache__/
+**/.pytest_cache/
+*.py[cod]

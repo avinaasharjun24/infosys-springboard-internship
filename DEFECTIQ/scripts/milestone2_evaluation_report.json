@@ -1,0 +1,807 @@
+{
+  "metrics": {
+    "severity_accuracy_pct": 92.3076923076923,
+    "component_accuracy_pct": 100.0,
+    "priority_accuracy_pct": 92.3076923076923,
+    "log_presence_accuracy_pct": 100.0,
+    "exception_extraction_accuracy_pct": 92.3076923076923,
+    "historical_sample_accuracy_pct": 80.0,
+    "total_test_cases": 13,
+    "historical_samples_tested": 5
+  },
+  "severity_confusion_matrix": {
+    "Critical": {
+      "Critical": 2
+    },
+    "High": {
+      "High": 4,
+      "Critical": 1
+    },
+    "Medium": {
+      "Medium": 5
+    },
+    "Low": {
+      "Low": 1
+    }
+  },
+  "test_results": [
+    {
+      "test_id": "TC-01",
+      "scenario": "Critical Defect (Fatal crash / Data loss)",
+      "triage_predicted": {
+        "severity": "Critical",
+        "priority": "P1",
+        "affected_component": "UI",
+        "confidence": 0.92,
+        "reasoning": "Classified as Critical due to detected failure pattern 'fatal'. System crashes, unhandled deadlocks, and fatal corruptions require immediate escalation.",
+        "evidence": [
+          "Critical keyword detected: 'fatal' indicating catastrophic failure or crash"
+        ],
+        "historical_mapping": {
+          "blocker": "Critical",
+          "critical": "Critical",
+          "major": "High",
+          "normal": "Medium",
+          "minor": "Low",
+          "trivial": "Low",
+          "enhancement": "Low"
+        },
+        "classification_source": "deterministic_expert"
+      },
+      "log_predicted": {
+        "has_logs": true,
+        "status": "analyzed",
+        "exception_type": null,
+        "error_message": null,
+        "failure_point": null,
+        "file_name": null,
+        "line_number": null,
+        "chained_exceptions": [],
+        "affected_code_path": [],
+        "technical_findings": [
+          "Identified 2 general error markers in log output without Java stack trace."
+        ],
+        "confidence": 0.6,
+        "analysis_source": "deterministic_parser"
+      },
+      "expected": {
+        "id": "TC-01",
+        "scenario": "Critical Defect (Fatal crash / Data loss)",
+        "title": "Fatal JVM crash and workspace corruption when saving project properties",
+        "description": "Saving project properties triggers an immediate fatal segmentation fault in SWT native bridge, corrupting workspace metadata and causing total data loss of open buffers.",
+        "component": "UI",
+        "logs": "SIGSEGV (0xb) at pc=0x00007ff81a2b3c40, pid=14208, tid=128\nProblematic frame:\nC  [libswt-win32-4430.dll+0x2b3c40]\nFatal error in JVM: Segmentation fault",
+        "expected_severity": "Critical",
+        "expected_priority": "P1",
+        "expected_component": "UI",
+        "expected_has_logs": true,
+        "expected_exception": null
+      },
+      "status": "PASS"
+    },
+    {
+      "test_id": "TC-02",
+      "scenario": "High-Severity Defect (Compiler failure / Broken build)",
+      "triage_predicted": {
+        "severity": "High",
+        "priority": "P2",
+        "affected_component": "Core",
+        "confidence": 0.88,
+        "reasoning": "Classified as High severity due to exception signature 'nullpointerexception'. Core functional breakage impairs developer workflow without total system crash.",
+        "evidence": [
+          "High-severity exception/failure pattern: 'nullpointerexception'"
+        ],
+        "historical_mapping": {
+          "blocker": "Critical",
+          "critical": "Critical",
+          "major": "High",
+          "normal": "Medium",
+          "minor": "Low",
+          "trivial": "Low",
+          "enhancement": "Low"
+        },
+        "classification_source": "deterministic_expert"
+      },
+      "log_predicted": {
+        "has_logs": true,
+        "status": "analyzed",
+        "exception_type": "java.lang.NullPointerException",
+        "error_message": "null",
+        "failure_point": "org.eclipse.jdt.internal.compiler.lookup.SourceTypeBinding.resolveTypesFor (SourceTypeBinding.java:1770)",
+        "file_name": "SourceTypeBinding.java",
+        "line_number": 1770,
+        "chained_exceptions": [],
+        "affected_code_path": [
+          "org.eclipse.jdt.internal.compiler.lookup.SourceTypeBinding.resolveTypesFor(SourceTypeBinding.java:1770)",
+          "org.eclipse.jdt.internal.compiler.lookup.SourceTypeBinding.methods(SourceTypeBinding.java:1464)"
+        ],
+        "technical_findings": [
+          "Detected primary exception: java.lang.NullPointerException",
+          "Error message: 'null'",
+          "Topmost application failure point identified at: org.eclipse.jdt.internal.compiler.lookup.SourceTypeBinding.resolveTypesFor (SourceTypeBinding.java:1770)"
+        ],
+        "confidence": 0.92,
+        "analysis_source": "deterministic_parser"
+      },
+      "expected": {
+        "id": "TC-02",
+        "scenario": "High-Severity Defect (Compiler failure / Broken build)",
+        "title": "NullPointerException in SourceTypeBinding.resolveTypesFor during batch compilation",
+        "description": "Batch compilation fails abruptly with an internal compiler error when resolving parameterized generic type bindings in Java 8 lambda expressions.",
+        "component": "Core",
+        "logs": "java.lang.NullPointerException: null\n\tat org.eclipse.jdt.internal.compiler.lookup.SourceTypeBinding.resolveTypesFor(SourceTypeBinding.java:1770)\n\tat org.eclipse.jdt.internal.compiler.lookup.SourceTypeBinding.methods(SourceTypeBinding.java:1464)",
+        "expected_severity": "High",
+        "expected_priority": "P2",
+        "expected_component": "Core",
+        "expected_has_logs": true,
+        "expected_exception": "java.lang.NullPointerException",
+        "expected_failure_file": "SourceTypeBinding.java",
+        "expected_failure_line": 1770
+      },
+      "status": "PASS"
+    },
+    {
+      "test_id": "TC-03",
+      "scenario": "Medium-Severity Defect (Functional discrepancy with workaround)",
+      "triage_predicted": {
+        "severity": "Medium",
+        "priority": "P3",
+        "affected_component": "UI",
+        "confidence": 0.8,
+        "reasoning": "Classified as Medium severity. Observed behavior 'incorrect' represents a standard defect with localized impact where workaround or alternative paths exist.",
+        "evidence": [
+          "Medium impact indicator: 'incorrect'"
+        ],
+        "historical_mapping": {
+          "blocker": "Critical",
+          "critical": "Critical",
+          "major": "High",
+          "normal": "Medium",
+          "minor": "Low",
+          "trivial": "Low",
+          "enhancement": "Low"
+        },
+        "classification_source": "deterministic_expert"
+      },
+      "log_predicted": {
+        "has_logs": false,
+        "status": "insufficient_log_evidence",
+        "exception_type": null,
+        "error_message": null,
+        "failure_point": null,
+        "file_name": null,
+        "line_number": null,
+        "chained_exceptions": [],
+        "affected_code_path": [],
+        "technical_findings": [
+          "No log or stack trace content was supplied; log analysis is limited to text description."
+        ],
+        "confidence": 1.0,
+        "analysis_source": "insufficient_evidence"
+      },
+      "expected": {
+        "id": "TC-03",
+        "scenario": "Medium-Severity Defect (Functional discrepancy with workaround)",
+        "title": "Incorrect quick-fix import suggestion for static member methods",
+        "description": "When invoking content assist quick-fix on an unresolved static method, the dialog suggests wrong package imports. Developer can manually type import as a workaround.",
+        "component": "UI",
+        "logs": "",
+        "expected_severity": "Medium",
+        "expected_priority": "P3",
+        "expected_component": "UI",
+        "expected_has_logs": false,
+        "expected_exception": null
+      },
+      "status": "PASS"
+    },
+    {
+      "test_id": "TC-04",
+      "scenario": "Low-Severity Defect (Cosmetic typo / layout)",
+      "triage_predicted": {
+        "severity": "Low",
+        "priority": "P4",
+        "affected_component": "UI",
+        "confidence": 0.85,
+        "reasoning": "Classified as Low severity based on pattern 'typo'. Issue represents cosmetic, typo, or minor enhancement with no functional impact.",
+        "evidence": [
+          "Cosmetic/low-impact indicator: 'typo'"
+        ],
+        "historical_mapping": {
+          "blocker": "Critical",
+          "critical": "Critical",
+          "major": "High",
+          "normal": "Medium",
+          "minor": "Low",
+          "trivial": "Low",
+          "enhancement": "Low"
+        },
+        "classification_source": "deterministic_expert"
+      },
+      "log_predicted": {
+        "has_logs": false,
+        "status": "insufficient_log_evidence",
+        "exception_type": null,
+        "error_message": null,
+        "failure_point": null,
+        "file_name": null,
+        "line_number": null,
+        "chained_exceptions": [],
+        "affected_code_path": [],
+        "technical_findings": [
+          "No log or stack trace content was supplied; log analysis is limited to text description."
+        ],
+        "confidence": 1.0,
+        "analysis_source": "insufficient_evidence"
+      },
+      "expected": {
+        "id": "TC-04",
+        "scenario": "Low-Severity Defect (Cosmetic typo / layout)",
+        "title": "Typo in Java Editor preferences description label",
+        "description": "Under Window > Preferences > Java > Editor, the word 'appearance' is misspelled as 'appearence'. Purely cosmetic typo.",
+        "component": "UI",
+        "logs": "",
+        "expected_severity": "Low",
+        "expected_priority": "P4",
+        "expected_component": "UI",
+        "expected_has_logs": false,
+        "expected_exception": null
+      },
+      "status": "PASS"
+    },
+    {
+      "test_id": "TC-05",
+      "scenario": "Missing Description (Short / ambiguous report)",
+      "triage_predicted": {
+        "severity": "Medium",
+        "priority": "P3",
+        "affected_component": "UI",
+        "confidence": 0.65,
+        "reasoning": "Classified as Medium severity by standard default rule. No catastrophic crash or purely cosmetic indicators detected.",
+        "evidence": [
+          "Default baseline classification applied"
+        ],
+        "historical_mapping": {
+          "blocker": "Critical",
+          "critical": "Critical",
+          "major": "High",
+          "normal": "Medium",
+          "minor": "Low",
+          "trivial": "Low",
+          "enhancement": "Low"
+        },
+        "classification_source": "deterministic_expert"
+      },
+      "log_predicted": {
+        "has_logs": false,
+        "status": "insufficient_log_evidence",
+        "exception_type": null,
+        "error_message": null,
+        "failure_point": null,
+        "file_name": null,
+        "line_number": null,
+        "chained_exceptions": [],
+        "affected_code_path": [],
+        "technical_findings": [
+          "No log or stack trace content was supplied; log analysis is limited to text description."
+        ],
+        "confidence": 1.0,
+        "analysis_source": "insufficient_evidence"
+      },
+      "expected": {
+        "id": "TC-05",
+        "scenario": "Missing Description (Short / ambiguous report)",
+        "title": "broken editor view",
+        "description": "it does not work properly please fix",
+        "component": "UI",
+        "logs": "",
+        "expected_severity": "Medium",
+        "expected_priority": "P3",
+        "expected_component": "UI",
+        "expected_has_logs": false,
+        "expected_exception": null
+      },
+      "status": "PASS"
+    },
+    {
+      "test_id": "TC-06",
+      "scenario": "Ambiguous Report (Conflicting symptoms)",
+      "triage_predicted": {
+        "severity": "Medium",
+        "priority": "P3",
+        "affected_component": "Core",
+        "confidence": 0.8,
+        "reasoning": "Classified as Medium severity. Observed behavior 'warning' represents a standard defect with localized impact where workaround or alternative paths exist.",
+        "evidence": [
+          "Medium impact indicator: 'warning'"
+        ],
+        "historical_mapping": {
+          "blocker": "Critical",
+          "critical": "Critical",
+          "major": "High",
+          "normal": "Medium",
+          "minor": "Low",
+          "trivial": "Low",
+          "enhancement": "Low"
+        },
+        "classification_source": "deterministic_expert"
+      },
+      "log_predicted": {
+        "has_logs": true,
+        "status": "malformed_logs",
+        "exception_type": null,
+        "error_message": null,
+        "failure_point": null,
+        "file_name": null,
+        "line_number": null,
+        "chained_exceptions": [],
+        "affected_code_path": [],
+        "technical_findings": [
+          "Supplied log text does not conform to standard stack trace or structured error log format."
+        ],
+        "confidence": 0.5,
+        "analysis_source": "deterministic_parser"
+      },
+      "expected": {
+        "id": "TC-06",
+        "scenario": "Ambiguous Report (Conflicting symptoms)",
+        "title": "Search indexer slow and occasional warning dialogs in UI",
+        "description": "Java search indexing takes several minutes on fresh workspace import and shows occasional warning dialogs about slow background jobs.",
+        "component": "Core",
+        "logs": "2026-11-23 10:14:22 [WARN] org.eclipse.jdt.internal.core.search.indexing.IndexManager: Job delayed",
+        "expected_severity": "Medium",
+        "expected_priority": "P3",
+        "expected_component": "Core",
+        "expected_has_logs": true,
+        "expected_exception": null
+      },
+      "status": "PASS"
+    },
+    {
+      "test_id": "TC-07",
+      "scenario": "UI-Related Defect (SWT / JFace Dialog crash)",
+      "triage_predicted": {
+        "severity": "High",
+        "priority": "P2",
+        "affected_component": "UI",
+        "confidence": 0.88,
+        "reasoning": "Classified as High severity due to exception signature 'swtexception'. Core functional breakage impairs developer workflow without total system crash.",
+        "evidence": [
+          "High-severity exception/failure pattern: 'swtexception'"
+        ],
+        "historical_mapping": {
+          "blocker": "Critical",
+          "critical": "Critical",
+          "major": "High",
+          "normal": "Medium",
+          "minor": "Low",
+          "trivial": "Low",
+          "enhancement": "Low"
+        },
+        "classification_source": "deterministic_expert"
+      },
+      "log_predicted": {
+        "has_logs": true,
+        "status": "analyzed",
+        "exception_type": "org.eclipse.swt.SWTException",
+        "error_message": "Widget is disposed",
+        "failure_point": "org.eclipse.swt.SWT.error (SWT.java:4559)",
+        "file_name": "SWT.java",
+        "line_number": 4559,
+        "chained_exceptions": [],
+        "affected_code_path": [
+          "org.eclipse.swt.SWT.error(SWT.java:4559)",
+          "org.eclipse.swt.widgets.Widget.error(Widget.java:472)",
+          "org.eclipse.swt.widgets.Widget.checkWidget(Widget.java:363)",
+          "org.eclipse.jface.window.Window.close(Window.java:321)"
+        ],
+        "technical_findings": [
+          "Detected primary exception: org.eclipse.swt.SWTException",
+          "Error message: 'Widget is disposed'",
+          "Topmost application failure point identified at: org.eclipse.swt.SWT.error (SWT.java:4559)"
+        ],
+        "confidence": 0.92,
+        "analysis_source": "deterministic_parser"
+      },
+      "expected": {
+        "id": "TC-07",
+        "scenario": "UI-Related Defect (SWT / JFace Dialog crash)",
+        "title": "Widget is disposed exception when closing Organize Imports dialog",
+        "description": "Rapidly pressing ESC while organize imports dialog is calculating proposals throws SWTException: Widget is disposed.",
+        "component": "UI",
+        "logs": "org.eclipse.swt.SWTException: Widget is disposed\n\tat org.eclipse.swt.SWT.error(SWT.java:4559)\n\tat org.eclipse.swt.widgets.Widget.error(Widget.java:472)\n\tat org.eclipse.swt.widgets.Widget.checkWidget(Widget.java:363)\n\tat org.eclipse.jface.window.Window.close(Window.java:321)",
+        "expected_severity": "High",
+        "expected_priority": "P2",
+        "expected_component": "UI",
+        "expected_has_logs": true,
+        "expected_exception": "org.eclipse.swt.SWTException",
+        "expected_failure_file": "Widget.java"
+      },
+      "status": "PASS"
+    },
+    {
+      "test_id": "TC-08",
+      "scenario": "Core-Related Defect (Compiler AST resolution)",
+      "triage_predicted": {
+        "severity": "High",
+        "priority": "P2",
+        "affected_component": "Core",
+        "confidence": 0.88,
+        "reasoning": "Classified as High severity due to exception signature 'internal compiler error'. Core functional breakage impairs developer workflow without total system crash.",
+        "evidence": [
+          "High-severity exception/failure pattern: 'internal compiler error'"
+        ],
+        "historical_mapping": {
+          "blocker": "Critical",
+          "critical": "Critical",
+          "major": "High",
+          "normal": "Medium",
+          "minor": "Low",
+          "trivial": "Low",
+          "enhancement": "Low"
+        },
+        "classification_source": "deterministic_expert"
+      },
+      "log_predicted": {
+        "has_logs": true,
+        "status": "analyzed",
+        "exception_type": "org.eclipse.jdt.internal.compiler.Compiler.handleInternalException",
+        "error_message": null,
+        "failure_point": "org.eclipse.jdt.internal.compiler.problem.ProblemHandler.handle (ProblemHandler.java:160)",
+        "file_name": "ProblemHandler.java",
+        "line_number": 160,
+        "chained_exceptions": [],
+        "affected_code_path": [
+          "org.eclipse.jdt.internal.compiler.problem.ProblemHandler.handle(ProblemHandler.java:160)",
+          "org.eclipse.jdt.internal.compiler.Compiler.handleInternalException(Compiler.java:620)"
+        ],
+        "technical_findings": [
+          "Detected primary exception: org.eclipse.jdt.internal.compiler.Compiler.handleInternalException",
+          "Topmost application failure point identified at: org.eclipse.jdt.internal.compiler.problem.ProblemHandler.handle (ProblemHandler.java:160)"
+        ],
+        "confidence": 0.92,
+        "analysis_source": "deterministic_parser"
+      },
+      "expected": {
+        "id": "TC-08",
+        "scenario": "Core-Related Defect (Compiler AST resolution)",
+        "title": "AbortCompilation error when resolving wildcard bounds in generic methods",
+        "description": "Eclipse batch compiler aborts compilation with internal compiler error while resolving recursive type bounds in AST parser.",
+        "component": "Core",
+        "logs": "org.eclipse.jdt.internal.compiler.problem.AbortCompilation: Internal compiler error\n\tat org.eclipse.jdt.internal.compiler.problem.ProblemHandler.handle(ProblemHandler.java:160)\n\tat org.eclipse.jdt.internal.compiler.Compiler.handleInternalException(Compiler.java:620)",
+        "expected_severity": "High",
+        "expected_priority": "P2",
+        "expected_component": "Core",
+        "expected_has_logs": true,
+        "expected_exception": "org.eclipse.jdt.internal.compiler.problem.AbortCompilation",
+        "expected_failure_file": "ProblemHandler.java"
+      },
+      "status": "PASS"
+    },
+    {
+      "test_id": "TC-09",
+      "scenario": "Debug-Related Defect (Debugger / Breakpoints)",
+      "triage_predicted": {
+        "severity": "High",
+        "priority": "P2",
+        "affected_component": "Debug",
+        "confidence": 0.88,
+        "reasoning": "Classified as High severity due to exception signature 'vmdisconnectedexception'. Core functional breakage impairs developer workflow without total system crash.",
+        "evidence": [
+          "High-severity exception/failure pattern: 'vmdisconnectedexception'"
+        ],
+        "historical_mapping": {
+          "blocker": "Critical",
+          "critical": "Critical",
+          "major": "High",
+          "normal": "Medium",
+          "minor": "Low",
+          "trivial": "Low",
+          "enhancement": "Low"
+        },
+        "classification_source": "deterministic_expert"
+      },
+      "log_predicted": {
+        "has_logs": true,
+        "status": "analyzed",
+        "exception_type": "com.sun.jdi.VMDisconnectedException",
+        "error_message": "connection closed",
+        "failure_point": "org.eclipse.jdi.internal.VirtualMachineImpl.verifyConnected (VirtualMachineImpl.java:540)",
+        "file_name": "VirtualMachineImpl.java",
+        "line_number": 540,
+        "chained_exceptions": [],
+        "affected_code_path": [
+          "org.eclipse.jdi.internal.VirtualMachineImpl.verifyConnected(VirtualMachineImpl.java:540)",
+          "org.eclipse.jdt.internal.debug.core.model.JDIDebugTarget.breakpointAdded(JDIDebugTarget.java:1280)"
+        ],
+        "technical_findings": [
+          "Detected primary exception: com.sun.jdi.VMDisconnectedException",
+          "Error message: 'connection closed'",
+          "Topmost application failure point identified at: org.eclipse.jdi.internal.VirtualMachineImpl.verifyConnected (VirtualMachineImpl.java:540)"
+        ],
+        "confidence": 0.92,
+        "analysis_source": "deterministic_parser"
+      },
+      "expected": {
+        "id": "TC-09",
+        "scenario": "Debug-Related Defect (Debugger / Breakpoints)",
+        "title": "Breakpoint suspension fails with VMDisconnectedException in remote launch",
+        "description": "Connecting remote JDIDebugModel session disconnects unexpectedly when setting a conditional method breakpoint.",
+        "component": "Debug",
+        "logs": "com.sun.jdi.VMDisconnectedException: connection closed\n\tat org.eclipse.jdi.internal.VirtualMachineImpl.verifyConnected(VirtualMachineImpl.java:540)\n\tat org.eclipse.jdt.internal.debug.core.model.JDIDebugTarget.breakpointAdded(JDIDebugTarget.java:1280)",
+        "expected_severity": "High",
+        "expected_priority": "P2",
+        "expected_component": "Debug",
+        "expected_has_logs": true,
+        "expected_exception": "com.sun.jdi.VMDisconnectedException",
+        "expected_failure_file": "JDIDebugTarget.java"
+      },
+      "status": "PASS"
+    },
+    {
+      "test_id": "TC-10",
+      "scenario": "Chained Exceptions (Caused by nested failure)",
+      "triage_predicted": {
+        "severity": "Critical",
+        "priority": "P1",
+        "affected_component": "Core",
+        "confidence": 0.92,
+        "reasoning": "Classified as Critical due to detected failure pattern 'corrupt'. System crashes, unhandled deadlocks, and fatal corruptions require immediate escalation.",
+        "evidence": [
+          "Critical keyword detected: 'corrupt' indicating catastrophic failure or crash"
+        ],
+        "historical_mapping": {
+          "blocker": "Critical",
+          "critical": "Critical",
+          "major": "High",
+          "normal": "Medium",
+          "minor": "Low",
+          "trivial": "Low",
+          "enhancement": "Low"
+        },
+        "classification_source": "deterministic_expert"
+      },
+      "log_predicted": {
+        "has_logs": true,
+        "status": "analyzed",
+        "exception_type": "org.eclipse.jdt.core.JavaModelException",
+        "error_message": "Error reading index",
+        "failure_point": "org.eclipse.jdt.internal.core.JavaModelManager.getIndexManager (JavaModelManager.java:820)",
+        "file_name": "JavaModelManager.java",
+        "line_number": 820,
+        "chained_exceptions": [
+          {
+            "type": "java.io.IOException",
+            "message": "Corrupt zip entry"
+          }
+        ],
+        "affected_code_path": [
+          "org.eclipse.jdt.internal.core.JavaModelManager.getIndexManager(JavaModelManager.java:820)",
+          "java.util.zip.ZipFile.read(ZipFile.java:310)"
+        ],
+        "technical_findings": [
+          "Detected primary exception: org.eclipse.jdt.core.JavaModelException",
+          "Error message: 'Error reading index'",
+          "Nested root cause: java.io.IOException Corrupt zip entry",
+          "Topmost application failure point identified at: org.eclipse.jdt.internal.core.JavaModelManager.getIndexManager (JavaModelManager.java:820)"
+        ],
+        "confidence": 0.92,
+        "analysis_source": "deterministic_parser"
+      },
+      "expected": {
+        "id": "TC-10",
+        "scenario": "Chained Exceptions (Caused by nested failure)",
+        "title": "JavaModelException wrapping nested IOException during index read",
+        "description": "Failed to read project binary index table during workspace refresh.",
+        "component": "Core",
+        "logs": "org.eclipse.jdt.core.JavaModelException: Error reading index\n\tat org.eclipse.jdt.internal.core.JavaModelManager.getIndexManager(JavaModelManager.java:820)\nCaused by: java.io.IOException: Corrupt zip entry\n\tat java.util.zip.ZipFile.read(ZipFile.java:310)",
+        "expected_severity": "High",
+        "expected_priority": "P2",
+        "expected_component": "Core",
+        "expected_has_logs": true,
+        "expected_exception": "org.eclipse.jdt.core.JavaModelException",
+        "expected_chained_exception": "java.io.IOException"
+      },
+      "status": "WARN"
+    },
+    {
+      "test_id": "TC-11",
+      "scenario": "Only Error Messages (Without full Java stack trace)",
+      "triage_predicted": {
+        "severity": "Critical",
+        "priority": "P1",
+        "affected_component": "Core",
+        "confidence": 0.92,
+        "reasoning": "Classified as Critical due to detected failure pattern 'fatal'. System crashes, unhandled deadlocks, and fatal corruptions require immediate escalation.",
+        "evidence": [
+          "Critical keyword detected: 'fatal' indicating catastrophic failure or crash"
+        ],
+        "historical_mapping": {
+          "blocker": "Critical",
+          "critical": "Critical",
+          "major": "High",
+          "normal": "Medium",
+          "minor": "Low",
+          "trivial": "Low",
+          "enhancement": "Low"
+        },
+        "classification_source": "deterministic_expert"
+      },
+      "log_predicted": {
+        "has_logs": true,
+        "status": "analyzed",
+        "exception_type": null,
+        "error_message": null,
+        "failure_point": null,
+        "file_name": null,
+        "line_number": null,
+        "chained_exceptions": [],
+        "affected_code_path": [],
+        "technical_findings": [
+          "Identified 4 general error markers in log output without Java stack trace."
+        ],
+        "confidence": 0.6,
+        "analysis_source": "deterministic_parser"
+      },
+      "expected": {
+        "id": "TC-11",
+        "scenario": "Only Error Messages (Without full Java stack trace)",
+        "title": "Build path configuration error prevents clean build",
+        "description": "Eclipse console prints compilation errors and failed resource warnings without standard Java stack trace frames.",
+        "component": "Core",
+        "logs": "ERROR: [BuildPath] Missing required library: C:/libs/core.jar\nSEVERE: Failed to configure classpath container\nFATAL: Build aborted due to unresolvable classpath errors.",
+        "expected_severity": "Critical",
+        "expected_priority": "P1",
+        "expected_component": "Core",
+        "expected_has_logs": true,
+        "expected_exception": null
+      },
+      "status": "PASS"
+    },
+    {
+      "test_id": "TC-12",
+      "scenario": "No Logs Provided (insufficient_log_evidence)",
+      "triage_predicted": {
+        "severity": "Medium",
+        "priority": "P3",
+        "affected_component": "UI",
+        "confidence": 0.65,
+        "reasoning": "Classified as Medium severity by standard default rule. No catastrophic crash or purely cosmetic indicators detected.",
+        "evidence": [
+          "Default baseline classification applied"
+        ],
+        "historical_mapping": {
+          "blocker": "Critical",
+          "critical": "Critical",
+          "major": "High",
+          "normal": "Medium",
+          "minor": "Low",
+          "trivial": "Low",
+          "enhancement": "Low"
+        },
+        "classification_source": "deterministic_expert"
+      },
+      "log_predicted": {
+        "has_logs": false,
+        "status": "insufficient_log_evidence",
+        "exception_type": null,
+        "error_message": null,
+        "failure_point": null,
+        "file_name": null,
+        "line_number": null,
+        "chained_exceptions": [],
+        "affected_code_path": [],
+        "technical_findings": [
+          "No log or stack trace content was supplied; log analysis is limited to text description."
+        ],
+        "confidence": 1.0,
+        "analysis_source": "insufficient_evidence"
+      },
+      "expected": {
+        "id": "TC-12",
+        "scenario": "No Logs Provided (insufficient_log_evidence)",
+        "title": "Java formatting preference indentation tab size resets to default",
+        "description": "Changing tab size from 4 spaces to 2 spaces in formatting preferences does not persist across workbench restart. No error or log is generated.",
+        "component": "UI",
+        "logs": "",
+        "expected_severity": "Medium",
+        "expected_priority": "P3",
+        "expected_component": "UI",
+        "expected_has_logs": false,
+        "expected_exception": null,
+        "expected_log_status": "insufficient_log_evidence"
+      },
+      "status": "PASS"
+    },
+    {
+      "test_id": "TC-13",
+      "scenario": "Malformed Stack Trace",
+      "triage_predicted": {
+        "severity": "Medium",
+        "priority": "P3",
+        "affected_component": "Core",
+        "confidence": 0.65,
+        "reasoning": "Classified as Medium severity by standard default rule. No catastrophic crash or purely cosmetic indicators detected.",
+        "evidence": [
+          "Default baseline classification applied"
+        ],
+        "historical_mapping": {
+          "blocker": "Critical",
+          "critical": "Critical",
+          "major": "High",
+          "normal": "Medium",
+          "minor": "Low",
+          "trivial": "Low",
+          "enhancement": "Low"
+        },
+        "classification_source": "deterministic_expert"
+      },
+      "log_predicted": {
+        "has_logs": true,
+        "status": "malformed_logs",
+        "exception_type": null,
+        "error_message": null,
+        "failure_point": null,
+        "file_name": null,
+        "line_number": null,
+        "chained_exceptions": [],
+        "affected_code_path": [],
+        "technical_findings": [
+          "Supplied log text does not conform to standard stack trace or structured error log format."
+        ],
+        "confidence": 0.5,
+        "analysis_source": "deterministic_parser"
+      },
+      "expected": {
+        "id": "TC-13",
+        "scenario": "Malformed Stack Trace",
+        "title": "Pasted partial corrupted console buffer",
+        "description": "User pasted a corrupted log containing incomplete frame fragments and special characters.",
+        "component": "Core",
+        "logs": ">>> TRUNCATED BUFFER ??? ... [unknown offset] ::: at ???.broken(???:NaN) *** end of stream",
+        "expected_severity": "Medium",
+        "expected_priority": "P3",
+        "expected_component": "Core",
+        "expected_has_logs": true,
+        "expected_log_status": "malformed_logs"
+      },
+      "status": "PASS"
+    }
+  ],
+  "historical_results": [
+    {
+      "id": "454701",
+      "summary": "[jdt] NPE in SourceTypeBinding.resolveTypesFor",
+      "severity_raw": "normal",
+      "component": "Core",
+      "expected_mapped": "Medium"
+    },
+    {
+      "id": "444574",
+      "summary": "Could not retrieve declared fields (err_grp: 5f64d09e)",
+      "severity_raw": "normal",
+      "component": "Core",
+      "expected_mapped": "Medium"
+    },
+    {
+      "id": "451776",
+      "summary": "StackOverflowError while resolving recursive lambda expression",
+      "severity_raw": "major",
+      "component": "Core",
+      "expected_mapped": "High"
+    },
+    {
+      "id": "450123",
+      "summary": "Fatal crash during build path update with native launcher",
+      "severity_raw": "critical",
+      "component": "Core",
+      "expected_mapped": "Critical"
+    },
+    {
+      "id": "449001",
+      "summary": "Cosmetic typo in hover tooltip for Java editor",
+      "severity_raw": "minor",
+      "component": "UI",
+      "expected_mapped": "Low"
+    }
+  ]
+}
